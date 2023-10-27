@@ -8,12 +8,17 @@ use webpage::{Webpage, WebpageOptions};
 struct ArgumentParser;
 
 impl ArgumentParser {
-    /// Accepts 1 or 2 command line arguments representing title and body of `OrgEntry`
-    /// respectively
+    /// Accepts exactly 1 command line argument that is split into title(first line) and body(the
+    /// rest) of `OrgEntry` respectively
     fn parse(args: &[String]) -> Option<OrgEntry> {
         match args {
-            [_, title] => Some(OrgEntry::new(title.clone(), "".to_string())),
-            [_, title, body] => Some(OrgEntry::new(title.clone(), body.clone())),
+            [_, text] => {
+                let (title, body) = match text.split_once('\n') {
+                    Some((first, second)) => (first, second),
+                    None => (text.as_str(), ""),
+                };
+                Some(OrgEntry::new(title.to_string(), body.to_string()))
+            }
             _ => None,
         }
     }
@@ -135,6 +140,7 @@ pub trait LinkFormatter {
     }
 }
 
+// TODO:
 // struct YoutubeMusicLinkFormatter;
 //
 // impl LinkFormatter for YoutubeMusicLinkFormatter {
