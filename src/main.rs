@@ -47,7 +47,7 @@ impl OrgEntry {
     fn to_orgmode(&self) -> String {
         let now = Local::now().format("%Y-%m-%d %a %H:%M").to_string();
         format!(
-            "INBOX {}
+            "* INBOX {}
            |:PROPERTIES:
            |:CREATED:  [{}]
            |:END:
